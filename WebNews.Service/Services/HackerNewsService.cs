@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WebNews.Service.Models;
 
@@ -12,6 +13,7 @@ namespace WebNews.Service.Services
         private readonly IConfiguration _configuration;
         private const string NewStoryCacheKey = "NewestStories";
         private const int CacheDurationMinutes = 5;
+        private const string _newStoriesUrl = null;
 
         public HackerNewsService(IHttpClientFactory httpClientFactory, IMemoryCache memoryCache, ILogger<HackerNewsService> logger, IConfiguration configuration)
         {
@@ -46,7 +48,7 @@ namespace WebNews.Service.Services
             }
             catch (Exception ex) 
             {
-                _logger.LogError(ex, "Error occurred in GetNewestStoriesAsync (page: {Page}, pageSize: {PageSize}, search: {Search})", page, pageSize, search);
+                _logger.LogError(ex, $"Error occurred in {nameof(GetNewestStoriesAsync)} (page: {page}, pageSize: {pageSize}, search: {search})");
                 return [];
             }
         }
@@ -60,7 +62,7 @@ namespace WebNews.Service.Services
 
                 var url = string.Format(singleStoryUrl, storyId);
 
-                var response = await client.GetStringAsync(url);
+                var response = await client.GetStringAsync(url).ConfigureAwait(false);
 
                 return JsonConvert.DeserializeObject<NewsStory>(response);
             }
@@ -80,7 +82,7 @@ namespace WebNews.Service.Services
                 {
                     var newStoriesUrl = _configuration.GetSection("HackerNews:NewStoriesUrl").Value;
 
-                    var response = await client.GetStringAsync(newStoriesUrl);
+                    var response = await client.GetStringAsync(newStoriesUrl).ConfigureAwait(false);
                     storyIds = JsonConvert.DeserializeObject<List<int>>(response);
 
                     _memoryCache.Set(NewStoryCacheKey, storyIds, TimeSpan.FromMinutes(CacheDurationMinutes));
