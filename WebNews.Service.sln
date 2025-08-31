@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36401.2 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebNews.Service", "WebNews.Service\WebNews.Service.csproj", "{D5453EAE-7EFE-4A0D-9E67-87E8DA0F956E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebNews.Test", "WebNews.Test\WebNews.Test.csproj", "{F28583B0-5B54-46CC-B00D-73692D144402}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5453EAE-7EFE-4A0D-9E67-87E8DA0F956E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5453EAE-7EFE-4A0D-9E67-87E8DA0F956E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5453EAE-7EFE-4A0D-9E67-87E8DA0F956E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5453EAE-7EFE-4A0D-9E67-87E8DA0F956E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F28583B0-5B54-46CC-B00D-73692D144402}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F28583B0-5B54-46CC-B00D-73692D144402}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F28583B0-5B54-46CC-B00D-73692D144402}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F28583B0-5B54-46CC-B00D-73692D144402}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49257B60-4B85-4229-903F-0F7014D5670F}
+	EndGlobalSection
+EndGlobal
