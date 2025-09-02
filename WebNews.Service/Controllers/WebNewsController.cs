@@ -22,7 +22,7 @@ namespace WebNews.Service.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<NewsStory>>> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] string? search = null)
+        public async Task<ActionResult<NewsResponse>> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 20, [FromQuery] string? search = null)
         {
             try
             {

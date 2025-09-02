@@ -4,6 +4,6 @@ namespace WebNews.Service.Services
 {
     public interface IHackerNewsService
     {
-        Task<List<NewsStory>> GetNewestStoriesAsync(int page, int pageSize, string? search = null);
+        Task<NewsResponse> GetNewestStoriesAsync(int page, int pageSize, string? search = null);
     }
 }

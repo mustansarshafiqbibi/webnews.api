@@ -19,6 +19,16 @@ builder.Services.AddScoped<IHackerNewsService>(sp =>
     return new HackerNewsService(httpClientFactory, memoryCache, logger, configuration);
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4400")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,7 +41,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// app.UseAuthorization();
+app.UseCors("AllowAngular");
 
 app.MapControllers();
 

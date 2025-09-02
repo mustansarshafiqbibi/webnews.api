@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Numerics;
 using WebNews.Service.Models;
 
 namespace WebNews.Service.Services
@@ -22,18 +24,22 @@ namespace WebNews.Service.Services
             _logger = logger;
             _configuration = configuration;
         }
-        public async Task<List<NewsStory>> GetNewestStoriesAsync(int page, int pageSize, string? search = null)
+        public async Task<NewsResponse> GetNewestStoriesAsync(int page, int pageSize, string? search = null)
         {
             try
             {
+                
                 var httpClient = _httpClientFactory.CreateClient();
 
                 var newStoryIds = await GetNewStoryIdsAsync(httpClient);
 
-                var pageIds = newStoryIds.Skip((page - 1) * pageSize).Take(pageSize);
+               
 
                 var stories = new List<NewsStory>();
 
+                var pageIds = newStoryIds.Skip((page - 1) * pageSize).Take(pageSize);
+
+                var total = newStoryIds.Count;
                 foreach (var storyId in pageIds)
                 {
                     var story = await GetStoryAsync(httpClient, storyId);
@@ -44,12 +50,19 @@ namespace WebNews.Service.Services
                     }
                 }
 
-                return stories;
+
+                return new NewsResponse
+                {
+                  
+                    TotalStories = total,
+                    NewsStories = stories.ToList()
+                };
             }
             catch (Exception ex) 
             {
                 _logger.LogError(ex, $"Error occurred in {nameof(GetNewestStoriesAsync)} (page: {page}, pageSize: {pageSize}, search: {search})");
-                return [];
+                return null;
+                ;
             }
         }
 
