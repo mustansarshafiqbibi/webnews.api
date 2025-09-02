@@ -33,16 +33,17 @@ namespace WebNews.Service.Services
 
                 var newStoryIds = await GetNewStoryIdsAsync(httpClient);
 
-               
-
-                var stories = new List<NewsStory>();
 
                 var pageIds = newStoryIds.Skip((page - 1) * pageSize).Take(pageSize);
 
                 var total = newStoryIds.Count;
+
+                var singleStoryUrl = _configuration.GetSection("HackerNews:SingleStoryUrl").Value;
+                var stories = new List<NewsStory>();
+
                 foreach (var storyId in pageIds)
                 {
-                    var story = await GetStoryAsync(httpClient, storyId);
+                    var story = await GetStoryAsync(httpClient, storyId, singleStoryUrl);
 
                     if (story != null && (string.IsNullOrEmpty(search) || (story.Title?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false)))
                     {
@@ -55,7 +56,7 @@ namespace WebNews.Service.Services
                 {
                   
                     TotalStories = total,
-                    NewsStories = stories.ToList()
+                    NewsStories = stories
                 };
             }
             catch (Exception ex) 
@@ -66,13 +67,10 @@ namespace WebNews.Service.Services
             }
         }
 
-        private async Task<NewsStory?> GetStoryAsync(HttpClient client, int storyId)
+        private async Task<NewsStory?> GetStoryAsync(HttpClient client, int storyId, string? singleStoryUrl)
         {
-
             try
             {
-                var singleStoryUrl = _configuration.GetSection("HackerNews:SingleStoryUrl").Value;
-
                 var url = string.Format(singleStoryUrl, storyId);
 
                 var response = await client.GetStringAsync(url).ConfigureAwait(false);
