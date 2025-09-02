@@ -32,16 +32,21 @@ namespace WebNews.Test
                 new NewsStory { Id = 1, Title = "Story 1", Url = "http://story1" },
                 new NewsStory { Id = 2, Title = "Story 2", Url = "http://story2" }
             };
+            var newsResponse = new NewsResponse
+            {
+                TotalStories = 500,
+                NewsStories = stories
+            };
             _hackerNewsServiceMock
                 .Setup(s => s.GetNewestStoriesAsync(1, 20, null))
-                .ReturnsAsync(stories);
+                .ReturnsAsync(newsResponse);
 
             // Act
             var result = await _controller.Get(1, 20, null);
 
             // Assert
-            var okResult = Assert.IsType<ActionResult<List<NewsStory>>>(result);
-            Assert.Equal(stories, okResult.Value);
+            var okResult = Assert.IsType<ActionResult<NewsResponse>>(result);
+            Assert.Equal(newsResponse, okResult.Value);
         }
 
         [Fact]

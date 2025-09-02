@@ -91,8 +91,8 @@ namespace WebNews.Test
             var result = await _service.GetNewestStoriesAsync(1, 2);
 
             Assert.NotNull(result);
-            Assert.Equal(2, result.Count);
-            Assert.All(result, s => Assert.Equal("Test Story", s.Title));
+            Assert.Equal(2, result.TotalStories);
+            Assert.All(result.NewsStories, s => Assert.Equal("Test Story", s.Title));
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace WebNews.Test
         {
             var result = await _service.GetNewestStoriesAsync(1, 2, "Test");
 
-            Assert.All(result, s => Assert.Contains("Test", s.Title));
+            Assert.All(result.NewsStories, s => Assert.Contains("Test", s.Title));
         }
 
         [Fact]
@@ -110,15 +110,15 @@ namespace WebNews.Test
 
             var result = await _service.GetNewestStoriesAsync(1, 2);
 
-            Assert.Empty(result);
+            Assert.Null(result);
             _loggerMock.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => true),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-            Times.Once);
+                x => x.Log(
+                    LogLevel.Error,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => true),
+                    It.IsAny<Exception>(),
+                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+                Times.Once);
         }
     }
 }
